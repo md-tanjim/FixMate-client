@@ -608,12 +608,19 @@ function DashboardHeader({
             </span>
 
             <Badge
-              className="hidden shrink-0 rounded-full border-0 px-3 py-0.5 text-xs font-semibold sm:inline-flex"
-              style={{
-                backgroundColor:
-                  "color-mix(in srgb, var(--brand-secondary) 12%, transparent)",
-                color: "var(--brand-secondary)",
-              }}
+              className="shrink-0 rounded-full border-0 px-2 sm:px-3 py-0.5 text-[10px] sm:text-xs font-semibold"
+    style={{
+      backgroundColor:
+        "color-mix(in srgb, var(--fm-secondary) 12%, transparent)",
+      color: "var(--fm-secondary)",
+    }}
+
+    //           className="shrink-0 rounded-full border-0 px-2 sm:px-3 py-0.5 text-[10px] sm:text-xs font-semibold"
+    // style={{
+    //   backgroundColor:
+    //     "color-mix(in srgb, var(--fm-secondary) 12%, transparent)",
+    //   color: "var(--fm-secondary)",
+    // }}
             >
               {roleLabel}
             </Badge>
@@ -662,7 +669,7 @@ function DashboardHeader({
             {userRole === "customer" && (
               <DropdownMenuItem
                 onClick={() =>
-                  router.push("/dashboard/customer/repairs")
+                  router.push("/dashboard/customer/bookings")
                 }
                 className="cursor-pointer gap-3 rounded-lg px-2.5 py-2.5 text-sm font-medium"
               >

@@ -127,9 +127,19 @@ export const auth = betterAuth({
         "Your account has been suspended. Please contact support if you believe this is a mistake.",
     }),
 
-    // JWT and JWKS support for the future Express backend.
+    
     jwt({
       sessionCookieCache: true,
+      jwt: {
+        definePayload: ({ user }) => {
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
+        },
+      },
     }),
   ],
 

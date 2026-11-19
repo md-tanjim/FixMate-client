@@ -56,8 +56,8 @@ export default function CustomerDashboardPage() {
 
         // Fetch both endpoints simultaneously.
         const [recentBookings, counts] = await Promise.all([
-          getCustomerRecentBookings(session?.user.email),
-          getCustomerBookingCounts(session?.user.email),
+          getCustomerRecentBookings(session?.user.email as string),
+          getCustomerBookingCounts(session?.user.email as string),
         ]);
 
         // Avoid updating state if the component has unmounted.
@@ -94,15 +94,8 @@ export default function CustomerDashboardPage() {
   // ---------------------------------------------------------------------------
 
   const stats = {
-    // Prefer the total count if the backend returns it.
-    // Otherwise, use the three counts currently provided by your API.
-    totalRequests:
-      bookingCounts?.totalRequests ??
-      (bookingCounts
-        ? bookingCounts.requested +
-          bookingCounts.inProgress +
-          bookingCounts.completed
-        : 0),
+   
+    totalRequests:bookingCounts?.requested ?? 0,
 
     activeJobs: bookingCounts?.inProgress ?? 0,
 

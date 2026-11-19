@@ -46,7 +46,7 @@ const ROLE_DASHBOARDS: Record<UserRole, string> = {
 };
 
 const PROFILE_HREF = "/dashboard/profile";
-const CUSTOMER_REPAIRS_HREF = "/dashboard/customer/repairs";
+const CUSTOMER_REPAIRS_HREF = "/dashboard/customer/bookings";
 
 
 

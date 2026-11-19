@@ -21,6 +21,7 @@ import type {
 
 import {
   cancelCustomerBooking,
+  createCustomerCheckoutSession,
 } from "@/lib/api/customer-dashboard";
 
 import { Button } from "@/components/ui/button";
@@ -144,41 +145,44 @@ function formatAmount(amount: number) {
 type BookingActionProps = {
   booking: CustomerBooking;
   onCancel: (booking: CustomerBooking) => void;
+  onPayNow: (booking: CustomerBooking) => void;
+  isPaying: boolean;
 };
 
-function BookingAction({ booking, onCancel }: BookingActionProps) {
-  // Pay Now is intentionally not connected to Stripe yet.
+function BookingAction({booking,onCancel,onPayNow,isPaying}: BookingActionProps) {
+  // Pay Now btn: only completed and unpaid bookings.
   if (
-  booking.status === "completed" &&
-  booking.paymentStatus === "unpaid"
-) {
-  return (
-    <Button
-      type="button"
-      variant="default"
-      size="sm"
-      className="
-        h-9 min-w-[88px] gap-1.5
-        rounded-lg border
-        !border-[#F97316]
-        !bg-[#F97316]
-        !text-white
-        px-3 text-xs font-semibold
-        shadow-sm
-        transition-all duration-200
-        hover:!border-[#EA580C]
-        hover:!bg-[#EA580C]
-        hover:shadow-md
-        active:scale-[0.97]
-      "
-    >
-      <CreditCard className="size-3.5 text-white" />
-      <span>Pay Now</span>
-    </Button>
-  );
-}
+    booking.status === "completed" &&
+    booking.paymentStatus === "unpaid"
+  ) {
+    return (
+      <Button
+        type="button"
+        size="sm"
+        variant="default"
+        disabled={isPaying}
+        onClick={() => onPayNow(booking)}
+        className="
+          h-9 min-w-[88px] gap-1.5
+          rounded-lg border border-[#F97316]
+          bg-[#F97316] px-3
+          text-xs font-semibold text-white
+          shadow-sm transition-all
+          hover:border-[#EA580C]
+          hover:bg-[#EA580C]
+          active:scale-[0.97]
+          disabled:cursor-not-allowed
+          disabled:opacity-70
+        "
+      >
+        <CreditCard className="size-3.5" />
 
-  // Only requested bookings can be cancelled.
+        {isPaying ? "Opening..." : "Pay Now"}
+      </Button>
+    );
+  }
+
+  // Cancel btn: only requested bookings.
   if (booking.status === "requested") {
     return (
       <Button
@@ -186,9 +190,8 @@ function BookingAction({ booking, onCancel }: BookingActionProps) {
         variant="outline"
         size="sm"
         onClick={() => onCancel(booking)}
-        className="h-9 rounded-lg border-destructive/20 bg-destructive/30 px-3 text-xs font-semibold text-destructive hover:bg-destructive/15 hover:text-destructive"
+        className="h-9 rounded-lg border-destructive/20 bg-destructive/10 px-3 text-xs font-semibold text-destructive hover:bg-destructive/15 hover:text-destructive"
       >
-        <CircleX className="size-3.5" />
         Cancel
       </Button>
     );
@@ -198,29 +201,60 @@ function BookingAction({ booking, onCancel }: BookingActionProps) {
     <span className="text-sm text-muted-foreground">—</span>
   );
 }
-
 // -----------------------------------------------------------------------------
 // Customer bookings
 // -----------------------------------------------------------------------------
 
-export function CustomerBookingsCard({
-  bookings,
-}: CustomerBookingsCardProps) {
+export function CustomerBookingsCard({bookings}: CustomerBookingsCardProps) {
+  
   const [localBookings, setLocalBookings] = useState(bookings);
-
-  const [statusFilter, setStatusFilter] = useState<
-    BookingStatus | "all"
-  >("all");
-
-  const [selectedBooking, setSelectedBooking] =
-    useState<CustomerBooking | null>(null);
-
+  const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">("all");
+  const [selectedBooking, setSelectedBooking] =useState<CustomerBooking | null>(null);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [payingBookingId, setPayingBookingId] = useState<string | null>(null);
+  
+
+
+
+  // ---------------------------------------------------------------------------
+// Start Stripe Checkout
+// ---------------------------------------------------------------------------
+
+const handlePayNow = async (booking: CustomerBooking) => {
+  if (payingBookingId) return;
+
+  console.log(booking._id,"booooooooooooookiiiiiiiiiiiing id");
+  try {
+    setPayingBookingId(booking._id);
+
+    const checkout = await createCustomerCheckoutSession(booking._id);
+
+    // Only redirect to Stripes hosted checkout page.
+    const checkoutUrl = new URL(checkout.url);
+
+    if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") {
+      throw new Error("Invalid Stripe Checkout URL.");
+    }
+
+    window.location.assign(checkoutUrl.toString());
+  } catch (error) {
+    console.error("Checkout error:", error);
+
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Unable to start payment."
+    );
+
+    setPayingBookingId(null);
+  }
+};
+  
 
   // Keep the internal booking list synchronized with fetched data.
-  useEffect(() => {
-    setLocalBookings(bookings);
-  }, [bookings]);
+  // useEffect(() => {
+  //   setLocalBookings(bookings);
+  // }, [bookings]);
 
   // Filter bookings by the selected status.
   const filteredBookings = useMemo(() => {
@@ -422,6 +456,8 @@ export function CustomerBookingsCard({
                         <BookingAction
                           booking={booking}
                           onCancel={setSelectedBooking}
+                          onPayNow={handlePayNow}
+                          isPaying={payingBookingId === booking._id}
                         />
                       </div>
                     </div>
@@ -519,6 +555,8 @@ export function CustomerBookingsCard({
                     <BookingAction
                       booking={booking}
                       onCancel={setSelectedBooking}
+                      onPayNow={handlePayNow}
+                      isPaying={payingBookingId === booking._id}
                     />
                   </div>
                 </div>

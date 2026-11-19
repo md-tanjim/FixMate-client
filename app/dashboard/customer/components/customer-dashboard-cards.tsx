@@ -210,9 +210,9 @@ export function RecentBookingsCard({
   const [isCancelling, setIsCancelling] = useState(false);
 
   // Keep local data synchronized if the parent fetches new bookings.
-  useEffect(() => {
-    setLocalBookings(bookings);
-  }, [bookings]);
+  // useEffect(() => {
+  //   setLocalBookings(bookings);
+  // }, [bookings]);
 
   // ---------------------------------------------------------------------------
   // Cancel booking handler

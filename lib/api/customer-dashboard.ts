@@ -74,11 +74,37 @@ async function getJson<T>(endpoint: string): Promise<T> {
 }
 
 
-export async function getCustomerRecentBookings(customerEmail: string): Promise<CustomerBooking[]> {
-  const bookings = await getJson<CustomerBooking[]>(`/customer/bookings/dashboard/${customerEmail}`);
+// export async function getCustomerRecentBookings(customerEmail: string): Promise<CustomerBooking[]> {
+//   const bookings = await getJson<CustomerBooking[]>(`/customer/bookings/dashboard/${customerEmail}`);
 
-  return bookings;
+//   return bookings;
+// }
+
+export async function getCustomerRecentBookings(customerEmail: string): Promise<CustomerBooking[]> {
+
+  const token = await getTokenFromClient();
+  const response = await fetch(`${API_BASE_URL}/customer/bookings/dashboard/${customerEmail}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    const errorMessage = await response.text();
+
+    throw new Error(
+      errorMessage || `Request failed with status ${response.status}`
+    );
+  }
+
+  return (await response.json()) as CustomerBooking[];
 }
+
 
 
 export async function getCustomerBookingCounts(customerEmail: string): Promise<CustomerBookingCounts> 
@@ -99,14 +125,14 @@ type CancelBookingResponse = {
 
 export async function cancelCustomerBooking(bookingId: string): Promise<CancelBookingResponse> {
   
-// const token = await getTokenFromServer();
+const token = await getTokenFromClient();
   const response = await fetch(
     `${API_BASE_URL}/customer/bookings/${encodeURIComponent(bookingId)}/cancel`,
     {
       method: "PATCH",
       headers: {
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
@@ -136,8 +162,13 @@ export async function getCustomerBookings(customerEmail: string): Promise<Custom
     throw new Error("Customer email is required.");
   }
 
-  // Get Better Auth JWT
+
   const token = await getTokenFromClient();
+
+  console.log(token,"tooooooooooooooooooo")
+  if (!token) {
+  throw new Error("User is not authenticated (no token found)");
+}
 
   const response = await fetch(
     `${API_BASE_URL}/customer/all-bookings/${encodeURIComponent(customerEmail)}`,
@@ -162,7 +193,7 @@ export async function getCustomerBookings(customerEmail: string): Promise<Custom
     throw new Error("Invalid bookings response from server.");
   }
 
-  return result as CustomerBooking[];
+  return result;
 }
 
 
@@ -217,4 +248,59 @@ export async function createCustomerCheckoutSession(bookingId: string): Promise<
   }
 
   return result as CreateCheckoutSessionResponse;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+export type CustomerPayment = {
+  _id: string;
+  bookingId: string;
+  serviceTitle: string;
+  customerName: string;
+  customerEmail: string;
+  technicianName: string;
+  technicianEmail: string;
+  amount: number;
+  currency: string;
+  transactionId: string;
+  stripeSessionId: string;
+  paymentStatus: "paid";
+  paidAt: string;
+};
+
+type CustomerPaymentsResponse = {
+  payments: CustomerPayment[];
+};
+
+export async function getCustomerPayments(): Promise<CustomerPayment[]> {
+  
+  const token = await getTokenFromClient();
+
+  const response = await fetch(`${API_BASE_URL}/customer/payments`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    cache: "no-store",
+  });
+
+  const result = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(
+      result?.message || "Failed to load payment history."
+    );
+  }
+
+  return (result as CustomerPaymentsResponse).payments ?? [];
 }

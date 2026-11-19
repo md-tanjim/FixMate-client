@@ -56,7 +56,7 @@ export default function CustomerBookingsPage() {
         setIsLoading(true);
         setError(null);
 
-        const result = await getCustomerBookings(customerEmail);
+        const result = await getCustomerBookings(customerEmail as string);
 
         if (isCancelled) return;
 

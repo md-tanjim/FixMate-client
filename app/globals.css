@@ -1170,3 +1170,64 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* Technician service approval badges */
+.approval-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Pending — Amber */
+.approval-badge[data-approval-status="pending"] {
+  color: var(--fm-warning);
+  background: color-mix(
+    in srgb,
+    var(--fm-warning) 12%,
+    var(--fm-surface)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--fm-warning) 30%,
+    var(--fm-border)
+  );
+}
+
+/* Approved — Green */
+.approval-badge[data-approval-status="approved"] {
+  color: var(--fm-success);
+  background: color-mix(
+    in srgb,
+    var(--fm-success) 12%,
+    var(--fm-surface)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--fm-success) 30%,
+    var(--fm-border)
+  );
+}
+
+/* Rejected — Red */
+.approval-badge[data-approval-status="rejected"] {
+  color: var(--fm-danger);
+  background: color-mix(
+    in srgb,
+    var(--fm-danger) 12%,
+    var(--fm-surface)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--fm-danger) 30%,
+    var(--fm-border)
+  );
+}
