@@ -110,7 +110,7 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
     },
     {
       label: "My Services",
-      href: "/dashboard/technician/services",
+      href: "/dashboard/technician/my-services",
       icon: Wrench,
     },
     {
