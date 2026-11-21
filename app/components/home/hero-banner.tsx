@@ -27,8 +27,8 @@ export default function HeroBanner() {
 
     router.push(
       query
-        ? `/explore-servises?search=${encodeURIComponent(query)}`
-        : "/explore-servises"
+        ? `/services?search=${encodeURIComponent(query)}`
+        : "/services"
     );
   };
 
@@ -144,7 +144,7 @@ export default function HeroBanner() {
           <div className="mt-4 flex flex-wrap items-center gap-4 sm:mt-5 sm:gap-5">
 
             <Link
-              href="/explore-servises"
+              href="/services"
               className="
                 inline-flex h-10 items-center gap-2
                 rounded-lg bg-[var(--fm-primary)]

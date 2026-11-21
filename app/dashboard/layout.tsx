@@ -14,6 +14,7 @@ import {
   ChevronRight,
   ClipboardList,
   CreditCard,
+  Home,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -54,6 +55,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -67,6 +69,8 @@ type NavigationItem = {
   label: string;
   href: string;
   icon: LucideIcon;
+  mobileOnly?: boolean
+
 };
 
 type BreadcrumbItem = {
@@ -115,7 +119,7 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
     },
     {
       label: "Manage Requests",
-      href: "/dashboard/technician/requests",
+      href: "/dashboard/technician/manage-requests",
       icon: ClipboardList,
     },
   ],
@@ -146,6 +150,12 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
       href: "/dashboard/admin/transactions",
       icon: ArrowLeftRight,
     },
+  //    {
+  //   label: "Home",
+  //   href: "/",
+  //   icon: Home,
+  //   mobileOnly: true,
+  // },
   ],
 };
 
@@ -496,8 +506,25 @@ function DashboardHeader({
 
   return (
     <header className="sticky top-0 z-30 flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-border bg-background/95 px-4 backdrop-blur md:px-6">
+      
+      {/* //comehere */}
+      <Link
+  href="/"
+  className="flex md:hidden shrink-0 items-center gap-2"
+  aria-label="FixMate Home"
+>
+  <span className="flex size-9 items-center justify-center rounded-lg bg-[var(--fm-primary)] text-white">
+    <Wrench className="size-5" />
+  </span>
+
+  <span className="text-xl font-bold tracking-tight text-[var(--fm-primary)]">
+    FixMate
+  </span>
+</Link>
+
+      
       {/* Left side: mobile menu and breadcrumbs */}
-      <div className="flex min-w-0 items-center gap-2">
+      <div className="hidden md:flex min-w-0 items-center gap-2">
         <Button
           type="button"
           variant="ghost"
@@ -548,7 +575,7 @@ function DashboardHeader({
       </div>
 
       {/* Right side: homepage, theme, and user capsule */}
-      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+      <div className="ml-auto md:ml-0 flex shrink-0 items-center gap-1 sm:gap-2">
         {/* <Button
           type="button"
           variant="ghost"

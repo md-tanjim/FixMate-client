@@ -53,7 +53,7 @@ const CUSTOMER_REPAIRS_HREF = "/dashboard/customer/bookings";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
-  { label: "How It Works", href: "/how-it-works" },
+  { label: "How It Works", href: "/#how-it-works" },
   { label: "About", href: "/about" },
 ];
 
@@ -200,7 +200,7 @@ export default function Navbar() {
       variant="ghost"
       className="
         flex h-12
-        w-full max-w-[260px] sm:max-w-[280px]
+        w-full max-w-[160px] sm:max-w-[280px]
         items-center justify-start gap-2 sm:gap-2.5
         rounded-xl border border-border
         bg-background px-2.5 sm:px-3

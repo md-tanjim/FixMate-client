@@ -33,7 +33,7 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { getPublicServiceDetails } from "@/lib/api/publicApi";
-import ServiceBookingCard from "../service-booking-card";
+import ServiceBookingCard from "./service-booking-card";
 
 
 

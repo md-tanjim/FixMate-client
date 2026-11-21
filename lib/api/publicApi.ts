@@ -73,4 +73,80 @@ export async function getPublicServiceDetails(serviceId: string): Promise<Servic
   }
 
   return result as ServiceDetailsResponse;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//main explore-service page types
+export type PublicServicesQuery = {
+  search?: string;
+  category?: TechnicianService["category"] | "";
+  serviceMode?: TechnicianService["serviceMode"] | "";
+  sort?: "price-asc" | "price-desc" | "newest";
+};
+
+export type PublicServicesResponse = {
+  success: boolean;
+  total: number;
+  services: TechnicianService[];
+};
+
+
+//explore-servisce page fetch func
+export async function getPublicServices(filters: PublicServicesQuery = {}): Promise<PublicServicesResponse> {
+  try {
+    const params = new URLSearchParams();
+
+
+    if (filters.search?.trim()) {
+      params.set("search", filters.search.trim());
+    }
+
+    if (filters.category) {
+      params.set("category", filters.category);
+    }
+
+    if (filters.serviceMode) {
+      params.set("serviceMode", filters.serviceMode);
+    }
+
+    if (filters.sort) {
+      params.set("sort", filters.sort);
+    }
+
+    const queryString = params.toString();
+
+    const url = queryString
+      ? `${API_BASE_URL}/services?${queryString}`
+      : `${API_BASE_URL}/services`;
+
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch repair services.");
+    }
+
+    const result: PublicServicesResponse = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error("Get public services error:", error);
+    throw error;
+  }
 }
+
+

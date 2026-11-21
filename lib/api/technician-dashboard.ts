@@ -251,3 +251,96 @@ export async function deleteTechnicianService(serviceId: string): Promise<Techni
   );
 }
 
+
+
+
+
+// --------------------------------------------------
+// TECHNICIAN REQUEST TYPES
+// --------------------------------------------------
+
+export type BookingStatus =
+  | "requested"
+  | "accepted"
+  | "rejected"
+  | "in-progress"
+  | "completed"
+  | "cancelled";
+
+export type PaymentStatus = "unpaid" | "paid";
+
+export type TechnicianRequest = {
+  _id: string;
+  serviceId: string;
+
+  serviceTitle: string;
+  serviceImage?: string;
+  category?: string;
+  basePrice: number;
+  finalAmount?: number;
+
+  technicianName: string;
+  technicianEmail: string;
+
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+
+  address: string;
+  preferredDate: string;
+  problemDescription: string;
+
+  status: BookingStatus;
+  paymentStatus: PaymentStatus;
+  createdAt?: string;
+  paidAt?: string;
+};
+
+// --------------------------------------------------
+// GET TECHNICIAN REQUESTS
+// --------------------------------------------------
+
+export async function getTechnicianRequests(): Promise<TechnicianRequest[]> {
+
+  const result = await apiRequest<{success: boolean;requests: TechnicianRequest[];}>("/technician/requests");
+
+  return result.requests;
+}
+
+
+// --------------------------------------------------
+// UPDATE BOOKING STATUS
+// --------------------------------------------------
+
+export async function updateTechnicianRequestStatus(
+  bookingId: string,
+  status: "accepted" | "rejected" | "in-progress"
+) {
+  return technicianMutationRequest<{
+    success: boolean;
+    message: string;
+  }>(
+    `/technician/requests/${encodeURIComponent(bookingId)}/status`,
+    "PATCH",
+    { status }
+  );
+}
+
+// --------------------------------------------------
+// COMPLETE REPAIR JOB
+// --------------------------------------------------
+
+export async function completeTechnicianRequest(
+  bookingId: string,
+  finalAmount: number
+) {
+  return technicianMutationRequest<{
+    success: boolean;
+    message: string;
+    finalAmount: number;
+  }>(
+    `/technician/requests/${encodeURIComponent(bookingId)}/complete`,
+    "PATCH",
+    { finalAmount }
+  );
+}

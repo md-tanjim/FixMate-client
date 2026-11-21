@@ -83,13 +83,13 @@ export default function ServiceCard({service,showServiceArea = false}: ServiceCa
         {/* Category badge */}
         <div className="absolute left-3 top-3">
           <span className="
-            inline-flex items-center gap-1.5
-            rounded-full border border-white/50
-            bg-white/95 px-3 py-1
-            text-[11px] font-semibold text-slate-800
-            shadow-sm backdrop-blur-sm
-          ">
-            <Wrench size={12} className="text-[#0F766E]" />
+  inline-flex items-center gap-1.5
+  rounded-full border border-border
+  bg-card/95 px-3 py-1
+  text-[11px] font-semibold text-foreground
+  shadow-sm backdrop-blur-sm
+">
+            <Wrench size={12} className="text-primary" />
             {service.category}
           </span>
         </div>
@@ -109,9 +109,9 @@ export default function ServiceCard({service,showServiceArea = false}: ServiceCa
             `}
           >
             {isHomeVisit ? (
-              <House size={12} />
+              <House size={12} className="bg-primary text-primary-foreground" />
             ) : (
-              <Store size={12} />
+              <Store size={12} className="bg-secondary/20 text-foreground"/>
             )}
 
             {service.serviceMode}
@@ -193,7 +193,7 @@ export default function ServiceCard({service,showServiceArea = false}: ServiceCa
 
         {/* View Details */}
         <Link
-          href={`/explore-services/${service._id}`}
+          href={`/services/${service._id}`}
           className="
             mt-auto flex h-10 w-full items-center
             justify-center gap-2 rounded-lg
