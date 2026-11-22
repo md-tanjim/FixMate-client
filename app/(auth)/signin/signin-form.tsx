@@ -73,7 +73,7 @@ function getSafeCallbackUrl(value: string | null): string | null {
 // 3. SIGN-IN FORM
 // ==================================================
 
-function SignInForm() {
+export default function SignInForm() {
   // ----------------------------
   // Password state
   // ----------------------------
@@ -534,22 +534,3 @@ function SignInForm() {
   );
 }
 
-// ==================================================
-// 7. SUSPENSE BOUNDARY
-// ==================================================
-
-export default function SignInFormPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="fm-auth-page">
-          <p className="fm-auth-loading">
-            Preparing your FixMate sign-in page...
-          </p>
-        </main>
-      }
-    >
-      <SignInForm />
-    </Suspense>
-  );
-}
