@@ -4,7 +4,7 @@
 import { Suspense, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 
@@ -109,6 +109,10 @@ function getSafeCallbackUrl(value: string | null): string | null {
 // ==================================================
 
 function SignUpForm() {
+
+
+
+
   // ----------------------------
   // Role state
   // ----------------------------
@@ -154,8 +158,8 @@ function SignUpForm() {
   const [imageUploading, setImageUploading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
 
-  const { refetch } = useSession();
-
+  const {data: session, refetch } = useSession();
+  
   // ----------------------------
   // Callback URL
   // ----------------------------
@@ -328,6 +332,9 @@ function SignUpForm() {
 
         setImageUploading(false);
       }
+
+
+      
 
       // ==========================================
       // Create the Better Auth account

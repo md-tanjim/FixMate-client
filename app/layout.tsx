@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { ToastContainer, toast } from 'react-toastify';
 import Navbar from "./components/home/Navbar";
 import ConditionalNavbar from "./components/conditional-navbar";
+import Footer from "./components/home/Footer";
+import ConditionalFooter from "./components/home/ConditionalFooter";
 
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
@@ -31,6 +33,7 @@ export default function RootLayout({
         <ConditionalNavbar />
           {children}
           
+          <ConditionalFooter/>
           </ThemeProvider>
       </body>
         <ToastContainer/>
