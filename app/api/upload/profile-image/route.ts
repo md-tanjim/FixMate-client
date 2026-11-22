@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     // 1. Get environment variables
     // ----------------------------------------------
 
-    const apiKey = process.env.IMG_BB_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_IMG_BB_API_KEY;
     const uploadUrl = process.env.IMG_BB_URL;
 
     if (!apiKey || !uploadUrl) {

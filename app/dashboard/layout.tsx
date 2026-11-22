@@ -132,7 +132,7 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
     },
     {
       label: "Manage Users",
-      href: "/dashboard/admin/users",
+      href: "/dashboard/admin/user-management",
       icon: Users,
     },
     {
@@ -142,12 +142,12 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
     },
     {
       label: "All Bookings",
-      href: "/dashboard/admin/bookings",
+      href: "/dashboard/admin/all-bookings",
       icon: CalendarDays,
     },
     {
       label: "Transactions",
-      href: "/dashboard/admin/transactions",
+      href: "/dashboard/admin/all-transactions",
       icon: ArrowLeftRight,
     },
   //    {
@@ -162,7 +162,7 @@ const ROLE_NAVIGATION: Record<UserRole, NavigationItem[]> = {
 const SHARED_NAVIGATION: NavigationItem[] = [
   {
     label: "Update Profile",
-    href: "/dashboard/profile",
+    href: "/dashboard/update-profile",
     icon: UserRoundPen,
   },
 ];
