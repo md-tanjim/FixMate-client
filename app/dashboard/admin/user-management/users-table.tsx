@@ -36,9 +36,6 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// =============================================================================
-// Constants
-// =============================================================================
 
 const ROLE_FILTERS: {
   label: string;
