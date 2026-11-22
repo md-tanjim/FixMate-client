@@ -116,7 +116,7 @@ function getSafeCallbackUrl(value: string | null): string | null {
 // 4. SIGNUP FORM
 // ==================================================
 
-function SignUpForm() {
+export default function SignUpForm() {
   // ----------------------------
   // Role state
   // ----------------------------
@@ -1017,25 +1017,5 @@ function SignUpForm() {
 
       </div>
     </main>
-  );
-}
-
-// ==================================================
-// 10. SUSPENSE BOUNDARY
-// ==================================================
-
-export default function SignUpFormPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="fm-auth-page">
-          <p className="fm-auth-loading">
-            Preparing your FixMate signup page...
-          </p>
-        </main>
-      }
-    >
-      <SignUpForm />
-    </Suspense>
   );
 }
