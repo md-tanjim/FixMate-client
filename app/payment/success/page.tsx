@@ -100,7 +100,7 @@ function LoadingState() {
   );
 }
 
-function PaymentSuccessContent() {
+export default function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -490,17 +490,5 @@ function VerificationError({
         </p>
       </div>
     </main>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Suspense wrapper for useSearchParams()
-// -----------------------------------------------------------------------------
-
-export default function PaymentSuccessPage() {
-  return (
-    <Suspense fallback={<LoadingState />}>
-      <PaymentSuccessContent />
-    </Suspense>
   );
 }
