@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -13,9 +14,14 @@ import {
   type UserRole,
 } from "@/lib/config/user-roles";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import {
   DropdownMenu,
   DropdownMenuGroup,
@@ -48,8 +54,6 @@ const ROLE_DASHBOARDS: Record<UserRole, string> = {
 const PROFILE_HREF = "/dashboard/profile";
 const CUSTOMER_REPAIRS_HREF = "/dashboard/customer/bookings";
 
-
-
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
@@ -69,7 +73,7 @@ export default function Navbar() {
 
   // Avoid rendering the theme-dependent icon before hydration.
   // useEffect(() => {
-  //   // setMounted(true);
+  //   setMounted(true);
   // }, []);
 
   // Better Auth user information.
@@ -140,6 +144,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+
         {/* Logo */}
         <Link
           href="/"
@@ -170,6 +175,7 @@ export default function Navbar() {
 
         {/* Right-side actions */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+
           {/* Theme toggle */}
           <Button
             type="button"
@@ -188,129 +194,130 @@ export default function Navbar() {
 
           {/* Session loading state */}
           {isPending ? (
-  <div className="h-14 w-32 animate-pulse rounded-2xl bg-muted" />
-) : session ? (
-  <DropdownMenu>
-    {/* User capsule */}
-   <DropdownMenuTrigger
-  render={
-    <Button
-      type="button"
-      variant="ghost"
-      className="
-        flex h-12
-        w-full max-w-[160px] sm:max-w-[280px]
-        items-center justify-start gap-2 sm:gap-2.5
-        rounded-xl border border-border
-        bg-background px-2.5 sm:px-3
-        shadow-sm hover:bg-muted
-      "
-    />
-  }
->
-  <Avatar className="size-8 shrink-0">
-    <AvatarImage
-      src={userImage || undefined}
-      alt={userName || "User"}
-    />
-    <AvatarFallback className="bg-[var(--fm-primary)] text-xs text-white">
-      {userInitials}
-    </AvatarFallback>
-  </Avatar>
+            <div className="hidden h-14 w-32 animate-pulse rounded-2xl bg-muted md:block" />
+          ) : session ? (
 
-  <span className="min-w-0 flex-1 truncate text-left text-sm sm:text-[15px] font-semibold text-foreground">
-    {userName || "User"}
-  </span>
+            /* User capsule: desktop only */
+            <div className="hidden md:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="
+                        flex h-12
+                        w-full max-w-[160px] sm:max-w-[280px]
+                        items-center justify-start gap-2 sm:gap-2.5
+                        rounded-xl border border-border
+                        bg-background px-2.5 sm:px-3
+                        shadow-sm hover:bg-muted
+                      "
+                    />
+                  }
+                >
+                  <Avatar className="size-8 shrink-0">
+                    <AvatarImage
+                      src={userImage || undefined}
+                      alt={userName || "User"}
+                    />
 
-  <Badge
-    className="shrink-0 rounded-full border-0 px-2 sm:px-3 py-0.5 text-[10px] sm:text-xs font-semibold"
-    style={{
-      backgroundColor:
-        "color-mix(in srgb, var(--fm-secondary) 12%, transparent)",
-      color: "var(--fm-secondary)",
-    }}
-  >
-    {roleLabel}
-  </Badge>
+                    <AvatarFallback className="bg-[var(--fm-primary)] text-xs text-white">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
 
-  <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
-</DropdownMenuTrigger>
+                  <span className="min-w-0 flex-1 truncate text-left text-sm sm:text-[15px] font-semibold text-foreground">
+                    {userName || "User"}
+                  </span>
 
-    {/* Dropdown panel */}
-    <DropdownMenuContent
-      align="end"
-      sideOffset={10}
-      className="z-[100] w-[min(280px,calc(90vw-2rem))] 
-      rounded-2xl border border-border bg-background p-3 shadow-xl"
-      
-    >
-      {/* User information */}
-      <DropdownMenuGroup>
-        <DropdownMenuLabel className="px-3 py-3 font-normal">
-          <p className="text-base font-medium text-muted-foreground">
-            Signed in as
-          </p>
+                  <Badge
+                    className="shrink-0 rounded-full border-0 px-2 sm:px-3 py-0.5 text-[10px] sm:text-xs font-semibold"
+                    style={{
+                      backgroundColor:
+                        "color-mix(in srgb, var(--fm-secondary) 12%, transparent)",
+                      color: "var(--fm-secondary)",
+                    }}
+                  >
+                    {roleLabel}
+                  </Badge>
 
-          <p className="mt-1 break-all text-sm font-bold text-foreground">
-            {userEmail}
-          </p>
-        </DropdownMenuLabel>
-      </DropdownMenuGroup>
+                  <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+                </DropdownMenuTrigger>
 
-      <DropdownMenuSeparator />
+                {/* Dropdown panel */}
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={10}
+                  className="z-[100] w-[min(280px,calc(90vw-2rem))] rounded-2xl border border-border bg-background p-3 shadow-xl"
+                >
+                  {/* User information */}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel className="px-3 py-3 font-normal">
+                      <p className="text-base font-medium text-muted-foreground">
+                        Signed in as
+                      </p>
 
-      {/* Dashboard */}
-      <DropdownMenuItem
-        onClick={() => router.push(dashboardHref)}
-        className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
-      >
-        <LayoutDashboard className="size-5 text-[var(--fm-primary)]" />
-        {dashboardLabel}
-      </DropdownMenuItem>
+                      <p className="mt-1 break-all text-sm font-bold text-foreground">
+                        {userEmail}
+                      </p>
+                    </DropdownMenuLabel>
+                  </DropdownMenuGroup>
 
-      {/* Update profile */}
-      <DropdownMenuItem
-        onClick={() => router.push(PROFILE_HREF)}
-        className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
-      >
-        <UserRound className="size-5" />
-        Update Profile
-      </DropdownMenuItem>
+                  <DropdownMenuSeparator />
 
-      {/* Customer-specific option */}
-      {userRole === "customer" && (
-        <DropdownMenuItem
-          onClick={() => router.push(CUSTOMER_REPAIRS_HREF)}
-          className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
-        >
-          <Wrench className="size-5" />
-          My Repairs 
-        </DropdownMenuItem>
-      )}
+                  {/* Dashboard */}
+                  <DropdownMenuItem
+                    onClick={() => router.push(dashboardHref)}
+                    className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
+                  >
+                    <LayoutDashboard className="size-5 text-[var(--fm-primary)]" />
+                    {dashboardLabel}
+                  </DropdownMenuItem>
 
-      <DropdownMenuSeparator />
+                  {/* Update profile */}
+                  <DropdownMenuItem
+                    onClick={() => router.push(PROFILE_HREF)}
+                    className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
+                  >
+                    <UserRound className="size-5" />
+                    Update Profile
+                  </DropdownMenuItem>
 
-      {/* Logout */}
-      <DropdownMenuItem
-        onClick={() => void handleLogout()}
-        className="cursor-pointer rounded-lg px-3 py-3 text-base font-semibold text-red-600 focus:bg-red-50 focus:text-red-600"
-      >
-        <LogOut className="mr-2 size-5" />
-        Sign Out
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-) : (
-            /* Guest actions */
-            <div className="hidden items-center gap-3 sm:flex">
-              <Button variant="ghost" >
+                  {/* Customer-specific option */}
+                  {userRole === "customer" && (
+                    <DropdownMenuItem
+                      onClick={() => router.push(CUSTOMER_REPAIRS_HREF)}
+                      className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-3 text-base font-semibold"
+                    >
+                      <Wrench className="size-5" />
+                      My Repairs
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuSeparator />
+
+                  {/* Logout */}
+                  <DropdownMenuItem
+                    onClick={() => void handleLogout()}
+                    className="cursor-pointer rounded-lg px-3 py-3 text-base font-semibold text-red-600 focus:bg-red-50 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 size-5" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+          ) : (
+
+            /* Guest actions: desktop only */
+            <div className="hidden items-center gap-3 md:flex">
+              <Button variant="ghost">
                 <Link href="/signin">Sign In</Link>
               </Button>
 
-              <Button
-                
-                className="rounded-xl bg-[var(--fm-primary)] px-5 font-semibold text-white hover:bg-[var(--fm-primary-hover)]"
-              >
+              <Button className="rounded-xl bg-[var(--fm-primary)] px-5 font-semibold text-white hover:bg-[var(--fm-primary-hover)]">
                 <Link href="/signup">Sign Up</Link>
               </Button>
             </div>
@@ -338,6 +345,8 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="border-t border-border bg-background px-4 py-4 shadow-lg md:hidden">
+
+          {/* Public navigation links */}
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
@@ -351,24 +360,112 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {!isPending && !session && (
+          {/* Logged-in mobile account menu */}
+          {!isPending && session ? (
+            <div className="mt-4 space-y-2 border-t border-border pt-4">
+
+              {/* User information */}
+              <div className="flex items-center gap-3 rounded-xl bg-muted/50 px-4 py-3">
+                <Avatar className="size-10 shrink-0">
+                  <AvatarImage
+                    src={userImage || undefined}
+                    alt={userName || "User"}
+                  />
+
+                  <AvatarFallback className="bg-[var(--fm-primary)] text-xs text-white">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="truncate text-sm font-semibold text-foreground">
+                      {userName || "User"}
+                    </p>
+
+                    <Badge
+                      className="rounded-full border-0 px-2 py-0.5 text-[10px] font-semibold"
+                      style={{
+                        backgroundColor:
+                          "color-mix(in srgb, var(--fm-secondary) 12%, transparent)",
+                        color: "var(--fm-secondary)",
+                      }}
+                    >
+                      {roleLabel}
+                    </Badge>
+                  </div>
+
+                  <p className="mt-1 break-all text-xs text-muted-foreground">
+                    {userEmail}
+                  </p>
+                </div>
+              </div>
+
+              {/* Dashboard */}
+              <Link
+                href={dashboardHref}
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                <LayoutDashboard className="size-5 text-[var(--fm-primary)]" />
+                {dashboardLabel}
+              </Link>
+
+              {/* Update Profile */}
+              <Link
+                href={PROFILE_HREF}
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                <UserRound className="size-5" />
+                Update Profile
+              </Link>
+
+              {/* Customer-specific option */}
+              {userRole === "customer" && (
+                <Link
+                  href={CUSTOMER_REPAIRS_HREF}
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                >
+                  <Wrench className="size-5" />
+                  My Repairs
+                </Link>
+              )}
+
+              {/* Sign Out */}
+              <button
+                type="button"
+                onClick={() => {
+                  closeMobileMenu();
+                  void handleLogout();
+                }}
+                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50"
+              >
+                <LogOut className="size-5" />
+                Sign Out
+              </button>
+            </div>
+          ) : !isPending && !session ? (
+
+            /* Guest mobile actions */
             <div className="mt-4 flex gap-3 border-t border-border pt-4">
-              <Button variant="outline"  className="flex-1">
+              <Button
+                variant="outline"
+                className="flex-1"
+              >
                 <Link href="/sign-in" onClick={closeMobileMenu}>
                   Sign In
                 </Link>
               </Button>
 
-              <Button
-                
-                className="flex-1 bg-[var(--fm-primary)] text-white hover:bg-[var(--fm-primary-hover)]"
-              >
+              <Button className="flex-1 bg-[var(--fm-primary)] text-white hover:bg-[var(--fm-primary-hover)]">
                 <Link href="/signup" onClick={closeMobileMenu}>
                   Sign Up
                 </Link>
               </Button>
             </div>
-          )}
+          ) : null}
         </div>
       )}
     </header>
