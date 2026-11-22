@@ -175,8 +175,8 @@ function SignUpForm() {
   const safeCallbackUrl = getSafeCallbackUrl(callbackUrl);
 
   const signInUrl = safeCallbackUrl
-    ? `/sign-in?callbackUrl=${encodeURIComponent(safeCallbackUrl)}`
-    : "/sign-in";
+    ? `/signin?callbackUrl=${encodeURIComponent(safeCallbackUrl)}`
+    : "/signin";
 
   // ==================================================
   // 5. HANDLE IMAGE SELECTION

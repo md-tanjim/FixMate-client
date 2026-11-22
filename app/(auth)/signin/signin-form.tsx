@@ -113,8 +113,8 @@ function SignInForm() {
 
   // Preserve the original destination when navigating to signup.
   const registerUrl = safeCallbackUrl
-    ? `/sign-up?callbackUrl=${encodeURIComponent(safeCallbackUrl)}`
-    : "/sign-up";
+    ? `/signup?callbackUrl=${encodeURIComponent(safeCallbackUrl)}`
+    : "/signup";
 
   // ==================================================
   // 4. EMAIL AND PASSWORD SIGN-IN

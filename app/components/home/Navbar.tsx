@@ -454,7 +454,7 @@ export default function Navbar() {
                 variant="outline"
                 className="flex-1"
               >
-                <Link href="/sign-in" onClick={closeMobileMenu}>
+                <Link href="/signin" onClick={closeMobileMenu}>
                   Sign In
                 </Link>
               </Button>

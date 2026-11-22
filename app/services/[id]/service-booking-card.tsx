@@ -114,7 +114,7 @@ export default function ServiceBookingCard({
 
     if (!session) {
       router.push(
-        `/sign-in?callbackURL=${encodeURIComponent(pathname)}`
+        `/signin?callbackURL=${encodeURIComponent(pathname)}`
       );
       return;
     }

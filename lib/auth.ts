@@ -215,7 +215,7 @@ databaseHooks: {
       // Public email signup password validation
       // ----------------------------------------------
 
-      if (ctx.path === "/sign-up/email") {
+      if (ctx.path === "/signup/email") {
         const password = ctx.body?.password;
 
         const isValidPassword =

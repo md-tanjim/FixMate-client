@@ -44,7 +44,7 @@ export default function CustomerBookingsPage() {
 
     if (!customerEmail) {
       router.replace(
-        `/sign-in?callbackURL=${encodeURIComponent("/dashboard/customer/bookings")}`,
+        `/signin?callbackURL=${encodeURIComponent("/dashboard/customer/bookings")}`,
       );
       return;
     }

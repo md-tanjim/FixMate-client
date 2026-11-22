@@ -127,7 +127,7 @@ function PaymentSuccessContent() {
         : "/payment/success";
 
       router.replace(
-        `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`
+        `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`
       );
 
       return;
