@@ -6,15 +6,12 @@
         ".gitignore": true,
         ".prettierignore": true,
         ".prettierrc": true,
-        "AGENTS.md": true,
-        "CLAUDE.md": true,
         "components.json": true,
         "eslint.config.mjs": true,
         "next-env.d.ts": true,
         "tsconfig.json": true,
         "README.md": true,
         "postcss.config.mjs": true,
-        "app/favicon.ico": true,
         ".vscode": true,
         ".next": true
     }
