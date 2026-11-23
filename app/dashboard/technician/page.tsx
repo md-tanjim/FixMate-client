@@ -321,7 +321,7 @@ export default function TechnicianDashboardPage() {
 
         <StatCard
           title="Approved Services"
-          value={counts.approved + counts.pending}
+          value={counts.approved}
           description="Services approved by the admin."
           icon={ShieldCheck}
           iconClass="text-success"

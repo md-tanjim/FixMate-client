@@ -57,7 +57,7 @@ export function CustomerDashboardStatsCards({stats}: CustomerDashboardStatsCards
     {
       title: "Active Jobs",
       value: stats.activeJobs,
-      description: "Currently in progress",
+      description: "Currently in progress and accepted",
       icon: Wrench,
       iconStyle: "bg-secondary/10 text-secondary",
     },
