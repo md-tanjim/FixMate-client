@@ -311,9 +311,19 @@ export function RecentBookingsCard({
                     className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center"
                   >
                     {/* Service icon */}
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <ServiceIcon className="size-5" />
-                    </div>
+<div className="size-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
+                          {booking.serviceImage ? (
+                            <img
+                              src={booking.serviceImage}
+                              alt={booking.serviceTitle}
+                              className="size-full object-cover"
+                            />
+                          ) : (
+                            <div className="grid h-full w-full place-items-center">
+                              <ServiceIcon className="size-5" />
+                            </div>
+                          )}
+                        </div>
 
                     {/* Booking information */}
                     <div className="min-w-0 flex-1">

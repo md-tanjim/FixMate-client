@@ -30,6 +30,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -47,14 +48,14 @@ const STATUS_OPTIONS: {
   label: string;
   value: BookingStatus | "all";
 }[] = [
-  { label: "All Statuses", value: "all" },
-  { label: "Requested", value: "requested" },
-  { label: "Accepted", value: "accepted" },
-  { label: "In Progress", value: "in-progress" },
-  { label: "Completed", value: "completed" },
-  { label: "Rejected", value: "rejected" },
-  { label: "Cancelled", value: "cancelled" },
-];
+    { label: "All Statuses", value: "all" },
+    { label: "Requested", value: "requested" },
+    { label: "Accepted", value: "accepted" },
+    { label: "In Progress", value: "in-progress" },
+    { label: "Completed", value: "completed" },
+    { label: "Rejected", value: "rejected" },
+    { label: "Cancelled", value: "cancelled" },
+  ];
 
 const STATUS_LABELS: Record<BookingStatus, string> = {
   requested: "Requested",
@@ -149,7 +150,7 @@ type BookingActionProps = {
   isPaying: boolean;
 };
 
-function BookingAction({booking,onCancel,onPayNow,isPaying}: BookingActionProps) {
+function BookingAction({ booking, onCancel, onPayNow, isPaying }: BookingActionProps) {
   // Pay Now btn: only completed and unpaid bookings.
   if (
     booking.status === "completed" &&
@@ -205,51 +206,51 @@ function BookingAction({booking,onCancel,onPayNow,isPaying}: BookingActionProps)
 // Customer bookings
 // -----------------------------------------------------------------------------
 
-export function CustomerBookingsCard({bookings}: CustomerBookingsCardProps) {
-  
+export function CustomerBookingsCard({ bookings }: CustomerBookingsCardProps) {
+
   const [localBookings, setLocalBookings] = useState(bookings);
   const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">("all");
-  const [selectedBooking, setSelectedBooking] =useState<CustomerBooking | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<CustomerBooking | null>(null);
   const [isCancelling, setIsCancelling] = useState(false);
   const [payingBookingId, setPayingBookingId] = useState<string | null>(null);
-  
+
 
 
 
   // ---------------------------------------------------------------------------
-// Start Stripe Checkout
-// ---------------------------------------------------------------------------
+  // Start Stripe Checkout
+  // ---------------------------------------------------------------------------
 
-const handlePayNow = async (booking: CustomerBooking) => {
-  if (payingBookingId) return;
+  const handlePayNow = async (booking: CustomerBooking) => {
+    if (payingBookingId) return;
 
-  console.log(booking._id,"booooooooooooookiiiiiiiiiiiing id");
-  try {
-    setPayingBookingId(booking._id);
+    console.log(booking._id, "booooooooooooookiiiiiiiiiiiing id");
+    try {
+      setPayingBookingId(booking._id);
 
-    const checkout = await createCustomerCheckoutSession(booking._id);
+      const checkout = await createCustomerCheckoutSession(booking._id);
 
-    // Only redirect to Stripes hosted checkout page.
-    const checkoutUrl = new URL(checkout.url);
+      // Only redirect to Stripes hosted checkout page.
+      const checkoutUrl = new URL(checkout.url);
 
-    if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") {
-      throw new Error("Invalid Stripe Checkout URL.");
+      if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") {
+        throw new Error("Invalid Stripe Checkout URL.");
+      }
+
+      window.location.assign(checkoutUrl.toString());
+    } catch (error) {
+      console.error("Checkout error:", error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to start payment."
+      );
+
+      setPayingBookingId(null);
     }
+  };
 
-    window.location.assign(checkoutUrl.toString());
-  } catch (error) {
-    console.error("Checkout error:", error);
-
-    toast.error(
-      error instanceof Error
-        ? error.message
-        : "Unable to start payment."
-    );
-
-    setPayingBookingId(null);
-  }
-};
-  
 
   // Keep the internal booking list synchronized with fetched data.
   // useEffect(() => {
@@ -389,8 +390,18 @@ const handlePayNow = async (booking: CustomerBooking) => {
                     >
                       {/* Service */}
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <ServiceIcon className="size-5" />
+                        <div className="size-16 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
+                          {booking.serviceImage ? (
+                            <img
+                              src={booking.serviceImage}
+                              alt={booking.serviceTitle}
+                              className="size-full object-cover"
+                            />
+                          ) : (
+                            <div className="grid h-full w-full place-items-center">
+                              <ServiceIcon className="size-5" />
+                            </div>
+                          )}
                         </div>
 
                         <div className="min-w-0">
